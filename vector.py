@@ -62,8 +62,8 @@ class Vector(object):
 
     def angleBetween(self, v):
         try:
-            mag1 = Decimal(self.mag())
-            mag2 = Decimal(v.mag())
+            mag1 = self.mag()
+            mag2 = v.mag()
         except ZeroDivisionError:
             raise Exception("Cannot calcluate angle with zero vector")
         ratio = Decimal(self.dot(v))/Decimal(mag1*mag2)
@@ -71,7 +71,7 @@ class Vector(object):
             ratio = -1.
         elif ratio > 1:
             ratio = 1.
-        return acos(ratio)
+        return Decimal(acos(ratio))
 
     def isZero(self):
         return self.mag() < 1e-10

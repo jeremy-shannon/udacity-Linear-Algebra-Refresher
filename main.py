@@ -1,5 +1,6 @@
 from vector import *
 from line import *
+from plane import *
 from math import pi
 
 print "magnitude:"
@@ -37,7 +38,7 @@ print v1.angleBetween(v2)
 
 v1 = Vector([7.35, .221, 5.188])
 v2 = Vector([2.751, 8.259, 3.985])
-print (v1.angleBetween(v2) * 180/pi)
+print (v1.angleBetween(v2) * Decimal(180/pi))
 
 print ""
 print "test parallel, test orthogonal:"
@@ -122,3 +123,20 @@ print l1.getIntersect(l2)
 l1 = Line([1.182,5.562],6.744)
 l2 = Line([1.773,8.343],9.525)
 print l1.getIntersect(l2)
+
+print ""
+print "planes - same or parallel:"
+p1 = Plane([-.412,3.806,.728],-3.46)
+p2 = Plane([1.03,-9.515,-1.82],8.65)
+print "same:", p1 == p2
+print "parallel:",p1.parallel(p2)
+
+p1 = Plane([2.611,5.528,0.283],4.6)
+p2 = Plane([7.715,8.306,5.342],3.76)
+print "same:", p1 == p2
+print "parallel:",p1.parallel(p2)
+
+p1 = Plane([-7.926,8.625,-7.212],-7.952)
+p2 = Plane([-2.642,2.875,-2.404],-2.443)
+print "same:", p1 == p2
+print "parallel:",p1.parallel(p2)

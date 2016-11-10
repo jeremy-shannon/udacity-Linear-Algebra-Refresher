@@ -15,7 +15,7 @@ class Plane(object):
         if not normal_vector:
             all_zeros = ['0']*self.dimension
             normal_vector = Vector(all_zeros)
-        self.normal_vector = normal_vector
+        self.normal_vector = Vector(normal_vector)
 
         if not constant_term:
             constant_term = Decimal('0')
@@ -30,10 +30,10 @@ class Plane(object):
             c = self.constant_term
             basepoint_coords = ['0']*self.dimension
 
-            initial_index = Plane.first_nonzero_index(n)
-            initial_coefficient = n[initial_index]
+            initial_index = Plane.first_nonzero_index(n.coordinates)
+            initial_coefficient = n.coordinates[initial_index]
 
-            basepoint_coords[initial_index] = c/initial_coefficient
+            basepoint_coords[initial_index] = Decimal(c)/initial_coefficient
             self.basepoint = Vector(basepoint_coords)
 
         except Exception as e:
@@ -95,6 +95,20 @@ class Plane(object):
             if not MyDecimal(item).is_near_zero():
                 return k
         raise Exception(Plane.NO_NONZERO_ELTS_FOUND_MSG)
+
+            
+    def __eq__(self, v):
+        connectingV = self.basepoint - v.basepoint
+        if self.basepoint == v.basepoint and self.normal_vector == v.normal_vector:
+            return True
+        elif connectingV.testOrthogonal(self.normal_vector) and connectingV.testOrthogonal(v.normal_vector):
+            return True
+        else:
+            return False
+    
+    def parallel(self, v):
+        return self.normal_vector.testParallel(v.normal_vector)
+
 
 
 class MyDecimal(Decimal):
