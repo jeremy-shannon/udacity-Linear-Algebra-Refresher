@@ -104,7 +104,7 @@ class Line(object):
         if self.parallel(v):
             if self.noIntersect(v):
                 return "No Intersect"
-            if self.sameLine(v):
+            if self == v:
                 return "Same line"
         else:
             A = self.normal_vector.coordinates[0]
@@ -116,7 +116,7 @@ class Line(object):
             return Vector([(D*k1-B*k2)/(A*D-B*C), (-C*k1+A*k2)/(A*D-B*C)])
 
     
-    def sameLine(self, v):
+    def __eq__(self, v):
         connectingV = self.basepoint - v.basepoint
         if self.basepoint == v.basepoint and self.normal_vector == v.normal_vector:
             return True
