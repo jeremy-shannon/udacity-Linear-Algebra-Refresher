@@ -46,7 +46,7 @@ class LinearSystem(object):
 
         for i,p in enumerate(self.planes):
             try:
-                indices[i] = p.first_nonzero_index(p.normal_vector)
+                indices[i] = p.first_nonzero_index(p.normal_vector.coordinates)
             except Exception as e:
                 if str(e) == Plane.NO_NONZERO_ELTS_FOUND_MSG:
                     continue
@@ -85,10 +85,14 @@ class MyDecimal(Decimal):
         return abs(self) < eps
 
 
-p0 = Plane(normal_vector=Vector(['1','1','1']), constant_term='1')
-p1 = Plane(normal_vector=Vector(['0','1','0']), constant_term='2')
-p2 = Plane(normal_vector=Vector(['1','1','-1']), constant_term='3')
-p3 = Plane(normal_vector=Vector(['1','0','-2']), constant_term='2')
+# p0 = Plane(normal_vector=Vector(['1','1','1']), constant_term='1')
+# p1 = Plane(normal_vector=Vector(['0','1','0']), constant_term='2')
+# p2 = Plane(normal_vector=Vector(['1','1','-1']), constant_term='3')
+# p3 = Plane(normal_vector=Vector(['1','0','-2']), constant_term='2')
+p0 = Plane([1.,1.,1.],1.)
+p1 = Plane([0.,1.,0.],2.)
+p2 = Plane([1.,1.,-1.],3.)
+p3 = Plane([1.,0.,-2.],2.)
 
 s = LinearSystem([p0,p1,p2,p3])
 
