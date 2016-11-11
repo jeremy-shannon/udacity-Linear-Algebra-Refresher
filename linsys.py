@@ -106,3 +106,55 @@ print s
 
 print MyDecimal('1e-9').is_near_zero()
 print MyDecimal('1e-11').is_near_zero()
+
+s = LinearSystem([p0,p1,p2,p3])
+s.swap_rows(0,1)
+if not (s[0] == p1 and s[1] == p0 and s[2] == p2 and s[3] == p3):
+    print 'test case 1 failed'
+
+s.swap_rows(1,3)
+if not (s[0] == p1 and s[1] == p3 and s[2] == p2 and s[3] == p0):
+    print 'test case 2 failed'
+
+s.swap_rows(3,1)
+if not (s[0] == p1 and s[1] == p0 and s[2] == p2 and s[3] == p3):
+    print 'test case 3 failed'
+
+s.multiply_coefficient_and_row(1,0)
+if not (s[0] == p1 and s[1] == p0 and s[2] == p2 and s[3] == p3):
+    print 'test case 4 failed'
+
+s.multiply_coefficient_and_row(-1,2)
+if not (s[0] == p1 and
+        s[1] == p0 and
+        s[2] == Plane([-1,-1,1],-3) and
+        s[3] == p3):
+    print 'test case 5 failed'
+
+s.multiply_coefficient_and_row(10,1)
+if not (s[0] == p1 and
+        s[1] == Plane([10,10,10],10) and
+        s[2] == Plane([-1,-1,1],-3) and
+        s[3] == p3):
+    print 'test case 6 failed'
+
+s.add_multiple_times_row_to_row(0,0,1)
+if not (s[0] == p1 and
+        s[1] == Plane([10,10,10], 10) and
+        s[2] == Plane([-1,-1,1], -3) and
+        s[3] == p3):
+    print 'test case 7 failed'
+
+s.add_multiple_times_row_to_row(1,0,1)
+if not (s[0] == p1 and
+        s[1] == Plane([10,11,10], 12) and
+        s[2] == Plane([-1,-1,1], -3) and
+        s[3] == p3):
+    print 'test case 8 failed'
+
+s.add_multiple_times_row_to_row(-1,1,0)
+if not (s[0] == Plane([-10,-10,-10], -10) and
+        s[1] == Plane([10,11,10], 12) and
+        s[2] == Plane([-1,-1,1], -3) and
+        s[3] == p3):
+    print 'test case 9 failed'
