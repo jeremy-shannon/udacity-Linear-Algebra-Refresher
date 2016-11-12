@@ -13,8 +13,7 @@ class Plane(object):
         self.dimension = 3
 
         if not normal_vector:
-            all_zeros = ['0']*self.dimension
-            normal_vector = Vector(all_zeros)
+            normal_vector = [0]*self.dimension
         self.normal_vector = Vector(normal_vector)
 
         if not constant_term:
@@ -98,6 +97,8 @@ class Plane(object):
 
             
     def __eq__(self, v):
+        if not self.basepoint and not v.basepoint:
+            return True
         connectingV = self.basepoint - v.basepoint
         if self.basepoint == v.basepoint and self.normal_vector == v.normal_vector:
             return True
