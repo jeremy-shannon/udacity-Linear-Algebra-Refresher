@@ -38,19 +38,15 @@ class LinearSystem(object):
 
 
     def multiply_coefficient_and_row(self, coefficient, row):
-        coords = list(self[row].normal_vector.coordinates)
-        for i in range(len(coords)):
-            coords[i] *= Decimal(coefficient)
-        self[row].normal_vector.coordinates = tuple(coords)
-        self[row].constant_term *= coefficient
+        newNormalVector = self[row].normal_vector * coefficient
+        newConst = self[row].constant_term * coefficient
+        self[row] = Plane(newNormalVector.coordinates, newConst)
 
 
     def add_multiple_times_row_to_row(self, coefficient, row_to_add, row_to_be_added_to):
-        coords = list(self[row_to_be_added_to].normal_vector.coordinates)
-        for i in range(len(coords)):
-            coords[i] += Decimal(coefficient) * self[row_to_add].normal_vector.coordinates[i]
-        self[row_to_be_added_to].normal_vector.coordinates = tuple(coords)
-        self[row_to_be_added_to].constant_term += coefficient * self[row_to_add].constant_term
+        newNormalVector = self[row_to_be_added_to].normal_vector + (self[row_to_add].normal_vector * coefficient)
+        newconstant_term = self[row_to_be_added_to].constant_term + coefficient * self[row_to_add].constant_term
+        self[row_to_be_added_to] = Plane(newNormalVector.coordinates, newconstant_term)
 
     def indices_of_first_nonzero_terms_in_each_row(self):
         num_equations = len(self)
