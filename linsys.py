@@ -87,6 +87,22 @@ class LinearSystem(object):
                 
         return s
 
+    def compute_rref(self):
+        tf = self.compute_triangular_form()
+        for i in reversed(range(len(tf))):
+            leadingCoefIndex = None
+            try:
+                leadingCoefIndex = Plane.first_nonzero_index(tf[i].normal_vector.coordinates)
+            except:
+                pass
+            if leadingCoefIndex:
+                leadingCoef = tf[i].normal_vector.coordinates[leadingCoefIndex]
+                tf.multiply_coefficient_and_row(Decimal(1.)/leadingCoef,i)
+                for j in range(0,i):
+                    rowJCoef = tf[j].normal_vector.coordinates[leadingCoefIndex]
+                    tf.add_multiple_times_row_to_row(Decimal(-1.)*rowJCoef,i,j)
+        return tf
+
     def __len__(self):
         return len(self.planes)
 
@@ -115,7 +131,7 @@ class MyDecimal(Decimal):
     def is_near_zero(self, eps=1e-10):
         return abs(self) < eps
 
-
+print "********************test case 1 *******************************"
 p1 = Plane(normal_vector=(['1','1','1']), constant_term='1')
 p2 = Plane(normal_vector=(['0','1','1']), constant_term='2')
 s = LinearSystem([p1,p2])
@@ -123,7 +139,9 @@ r = s.compute_rref()
 if not (r[0] == Plane(normal_vector=(['1','0','0']), constant_term='-1') and
         r[1] == p2):
     print 'test case 1 failed'
+print r
 
+print "********************test case 2 *******************************"
 p1 = Plane(normal_vector=(['1','1','1']), constant_term='1')
 p2 = Plane(normal_vector=(['1','1','1']), constant_term='2')
 s = LinearSystem([p1,p2])
@@ -131,7 +149,9 @@ r = s.compute_rref()
 if not (r[0] == p1 and
         r[1] == Plane(constant_term='1')):
     print 'test case 2 failed'
+print r
 
+print "********************test case 3 *******************************"
 p1 = Plane(normal_vector=(['1','1','1']), constant_term='1')
 p2 = Plane(normal_vector=(['0','1','0']), constant_term='2')
 p3 = Plane(normal_vector=(['1','1','-1']), constant_term='3')
@@ -143,7 +163,9 @@ if not (r[0] == Plane(normal_vector=(['1','0','0']), constant_term='0') and
         r[2] == Plane(normal_vector=(['0','0','-2']), constant_term='2') and
         r[3] == Plane()):
     print 'test case 3 failed'
+print r
 
+print "********************test case 4 *******************************"
 p1 = Plane(normal_vector=(['0','1','1']), constant_term='1')
 p2 = Plane(normal_vector=(['1','-1','1']), constant_term='2')
 p3 = Plane(normal_vector=(['1','2','-5']), constant_term='3')
@@ -153,3 +175,4 @@ if not (r[0] == Plane(normal_vector=(['1','0','0']), constant_term=Decimal('23')
         r[1] == Plane(normal_vector=(['0','1','0']), constant_term=Decimal('7')/Decimal('9')) and
         r[2] == Plane(normal_vector=(['0','0','1']), constant_term=Decimal('2')/Decimal('9'))):
     print 'test case 4 failed'
+print r
