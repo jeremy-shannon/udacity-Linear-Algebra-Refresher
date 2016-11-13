@@ -95,7 +95,7 @@ class LinearSystem(object):
                 leadingCoefIndex = Plane.first_nonzero_index(tf[i].normal_vector.coordinates)
             except:
                 pass
-            if leadingCoefIndex:
+            if leadingCoefIndex or leadingCoefIndex == 0:
                 leadingCoef = tf[i].normal_vector.coordinates[leadingCoefIndex]
                 tf.multiply_coefficient_and_row(Decimal(1.)/leadingCoef,i)
                 for j in range(0,i):
